@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+// File: schema.prisma
+
+// File: schema.prisma
+
+model User {
+  id         String    @id @unique
+  username   String    @unique
+  password   String
+  created_at DateTime  @default(now())
+  status     String
+  role       String
+  token      Token?
+  expireDate DateTime  @default(dbgenerated("(NOW() + INTERVAL '1 month')"))
+  status_bot String    @default("Online")
+  bots       listBot[]
+}
+
+model Token {
+  id     Int    @id @unique @default(autoincrement())
+  token  String @unique
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model listBot {
+  id         Int    @id
+  userId     String
+  namaBot    String
+  status     String
+  world      String
+  uptime     String
+  lastUpdate String
+  botInfo    String
+  user       User   @relation(fields: [userId], references: [id])
+  uniqId     Int    @unique @default(autoincrement())
+
+  @@unique([id, userId])
+}
