@@ -28,18 +28,31 @@ import { toast } from "sonner"
 import { SyntheticEvent, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import swr from 'swr'
 
+const fetcher = async(url: string) => fetch(url).then(res => res.json());
 
 export default function SettingsPage() {
   const {data: session} = useSession();
-  console.log(session)
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
-  const changePassword = async(e: SyntheticEvent) =>{
+  const {data} = swr(`${process.env.NEXT_PUBLIC_API_URL}/api/user/token/${session?.user?.id}`, fetcher);
+  const shortedToken = data?.data?.data?.token;
+
+  const copyToClipboard = async(token: string) => {
+    try{
+      await navigator.clipboard.writeText(token);
+      toast.success('Token copied to clipboard');
+    }catch(error){
+      toast.error('An unexpected error has occurred');
+    }
+  }
+
+  const changePassword = async(e: SyntheticEvent) => {
     setIsLoading(true);
     e.preventDefault();
     try{
@@ -48,6 +61,8 @@ export default function SettingsPage() {
         newPassword: password
       })
       toast.success('Password changed successfully');
+      setOldPassword('');
+      setPassword('');
       router.refresh();
     }catch(error){
       if(axios.isAxiosError(error)){
@@ -196,7 +211,7 @@ export default function SettingsPage() {
             <Link href="#" className="font-semibold text-primary">Security</Link>
           </nav>
           <div className="grid gap-6">
-            <form onSubmit={(e)=> changePassword(e)}>
+            
             <Card x-chunk="dashboard-04-chunk-1">
               <CardHeader>
                 <CardTitle>Secret Token</CardTitle>
@@ -205,12 +220,14 @@ export default function SettingsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                  <Input disabled placeholder="••••••••" />
+                  <Input disabled placeholder={shortedToken || 'Not set by admin | contact admin'} value={shortedToken || ''} type={!shortedToken? "text": "password"}/>
+                  <Button onClick={()=> copyToClipboard(shortedToken)} className="mt-4 bg-slate-200 text-black" variant="outline">Copy</Button>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <Button disabled className="cursor-not-allowed">Save</Button>
               </CardFooter>
             </Card>
+            <form onSubmit={(e)=> changePassword(e)}>
             <Card x-chunk="dashboard-04-chunk-2" className="mt-4">
               <CardHeader>
                 <CardTitle>Password</CardTitle>

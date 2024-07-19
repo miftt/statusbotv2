@@ -77,3 +77,34 @@ export async function changePassword(userId: string, newPassword: string, oldPas
         return {status: true, statusCode: 200, message: 'Password changed successfully', data: updatePassword};
     }
 }
+
+export async function getAllUser(){
+    const users = await prisma.user.findMany();
+    return {
+        status: true,
+        statusCode: 200,
+        message: 'Users found',
+        data: users
+    };
+}
+
+export async function getToken(userId: string){
+    const token = await prisma.token.findUnique({
+        where: {
+            userId: userId
+        },
+        select: {
+            token: true
+        }
+    })
+    if(token){
+        return {
+            status: true,
+            statusCode: 200,
+            message: 'Token found',
+            data: token
+        };
+    }else{
+        return null;
+    }
+}
