@@ -1,7 +1,7 @@
 import { register } from '@/lib/prisma/service'
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest){
+export const POST = async (request: NextRequest) => {
     const req = await request.json();
     const res = await register(req);
     console.log(req, res)
