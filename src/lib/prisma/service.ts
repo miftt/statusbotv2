@@ -51,3 +51,29 @@ export async function register(
         }
     }
 }
+
+export async function changePassword(userId: string, newPassword: string, oldPassword: string) {
+    const checkOldPassword = await prisma.user.findUnique({
+        where: {
+            id: userId
+        },
+        select: {
+            password: true
+        }
+    })
+    const checkedOldPassword = checkOldPassword?.password as string;
+    const passwordConfirm = await bcrypt.compare(oldPassword, checkedOldPassword)
+    if(passwordConfirm === false){
+        return {status: false, statusCode: 400, message: 'Wrong old password'}
+    }else{
+        const updatePassword = await prisma.user.update({
+            where: {
+                id: userId
+            },
+            data: {
+                password: await bcrypt.hash(newPassword, 10),
+            }
+        })
+        return {status: true, statusCode: 200, message: 'Password changed successfully', data: updatePassword};
+    }
+}
