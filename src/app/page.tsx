@@ -49,22 +49,14 @@ import * as React from "react"
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
 import { useTheme } from "next-themes"
 
-import { signIn, signOut, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { signOut, useSession } from "next-auth/react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 export function Home() {
-  const {data: session, status} = useSession()
+  const {data: session, status} = useSession();
+  const { setTheme } = useTheme();
 
-  const router = useRouter()
-
-  useEffect(() => {
-    if(status === 'unauthenticated'){
-        router.push('/login');
-    }
-  },[router,status]);
-  const { setTheme } = useTheme()
 
   const [isLoading, setIsLoading] = useState(false)
   const handleLogout = async () => {
@@ -72,6 +64,7 @@ export function Home() {
     toast.success('Logout Success')
     await new Promise((r) => setTimeout(r, 1000))
     signOut()
+    setIsLoading(false)
   }
 
   return (
@@ -205,13 +198,15 @@ export function Home() {
             </DropdownMenuContent>
           </DropdownMenu>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>
+                {session?.user?.username}
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem><Link className="cursor-default" href={"/settings"}>Settings</Link></DropdownMenuItem>
+              <DropdownMenuItem><Link className="cursor-default" href={"/settings/profile"}>Settings</Link></DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
               {status === 'authenticated' ?  (
-                <DropdownMenuItem onClick={handleLogout}>
+                <DropdownMenuItem disabled={isLoading} onClick={handleLogout}>
                     Logout
                 </DropdownMenuItem>
               ):(
