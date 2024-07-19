@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { useState } from "react"
 
-export function LoginForm() {
+export default function LoginForm() {
   
   const {push} = useRouter();
   const [isLoading, setIsLoading] = useState(false)
@@ -102,5 +102,3 @@ export function LoginForm() {
     </>
   )
 }
-
-export default LoginForm;

@@ -26,10 +26,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
 import { toast } from "sonner"
 
-export function SettingsPage() {
-  const onKlik = () => {
-    toast.success('test Success')
-  }
+export default function SettingsPage() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -207,5 +204,3 @@ export function SettingsPage() {
     </div>
   )
 }
-
-export default SettingsPage;

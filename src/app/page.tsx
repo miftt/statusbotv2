@@ -53,7 +53,7 @@ import { signOut, useSession } from "next-auth/react"
 import { useState } from "react"
 import { toast } from "sonner"
 
-export function Home() {
+export default function Home() {
   const {data: session, status} = useSession();
   const { setTheme } = useTheme();
 
@@ -500,5 +500,3 @@ export function Home() {
     </div>
   )
 }
-
-export default Home;
