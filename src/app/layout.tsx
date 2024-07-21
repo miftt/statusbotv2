@@ -7,6 +7,7 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from 'sonner';
 import { ThemeProvider } from "@/components/theme-provider"
+import Navbar from "./navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,9 @@ export default function RootLayout({
     <SessionProvider>
     <Toaster position="top-center" richColors />
       <body className={inter.className}>
+        {!shouldDisableNavbar(pathname) && (
+            <Navbar/>
+        )}
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
