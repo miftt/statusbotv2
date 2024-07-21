@@ -49,3 +49,9 @@ model listBot {
 
   @@unique([id, userId])
 }
+
+model ItemList {
+  itemID Int    @id
+  name   String
+  rarity Int
+}
