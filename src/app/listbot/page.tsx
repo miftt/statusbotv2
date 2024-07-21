@@ -11,7 +11,6 @@ import {
   PanelLeft,
   PlusCircle,
   Search,
-  Settings,
   ShoppingCart,
   Users2,
 } from "lucide-react"
@@ -59,12 +58,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 
 export default function ListBotPage() {
   return (
