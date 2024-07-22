@@ -24,8 +24,6 @@ import { Button } from "@/components/ui/button"
 import { useSearchParams } from "next/navigation"
 import { Suspense, useEffect, useState } from "react"
 import useSWR from "swr"
-import { ChevronRightIcon, ChevronLeftIcon  } from "@radix-ui/react-icons"
-import { Skeleton } from "@/components/ui/skeleton"
 
 const getData = async (url: string) => {
   await new Promise((r) => setTimeout(r, 300));
@@ -42,11 +40,6 @@ interface Item {
   rarity: number;
 }
 
-interface ApiResponse {
-  items: Item[];
-  totalItems: number;
-}
-
 const ItemListContent = ({ currentPage, itemsPerPage }: { currentPage: number, itemsPerPage: number }) => {
   const search = useSearchParams();
   const searchQuery = search.get('q');
@@ -55,12 +48,10 @@ const ItemListContent = ({ currentPage, itemsPerPage }: { currentPage: number, i
   const queryValue = searchQuery || idQuery || '';
   const encodedQueryValue = encodeURI(queryValue);
 
-  const { data } = useSWR<ApiResponse>(
+  const { data } = useSWR<{ items: Item[] }>(
     `${process.env.NEXT_PUBLIC_API_URL}/api/itemlist?${queryType}=${encodedQueryValue}&page=${currentPage}&itemsPerPage=${itemsPerPage}`,
     getData
   );
-
-  const totalPages = Math.ceil((data?.totalItems || 0) / itemsPerPage);
 
   return (
     <Card x-chunk="dashboard-06-chunk-0">
@@ -92,7 +83,7 @@ const ItemListContent = ({ currentPage, itemsPerPage }: { currentPage: number, i
       </CardContent>
       <CardFooter>
         <div className="text-xs text-muted-foreground">
-          Showing <strong>{(currentPage - 1) * itemsPerPage + 1}</strong> to <strong>{Math.min(currentPage * itemsPerPage, data?.items?.length || 0)}</strong> of <strong>{data?.totalItems}</strong> items
+          Showing <strong>{(currentPage - 1) * itemsPerPage + 1}</strong> to <strong>{Math.min(currentPage * itemsPerPage, data?.items?.length || 0)}</strong> of <strong>{data?.items?.length}</strong> products
         </div>
       </CardFooter>
     </Card>
@@ -103,31 +94,17 @@ export default function ItemListPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const search = useSearchParams();
-  const searchQuery = search.get('q');
-  const idQuery = search.get('id');
-  const queryType = searchQuery ? 'q' : 'id';
-  const queryValue = searchQuery || idQuery || '';
-  const encodedQueryValue = encodeURI(queryValue);
-
-  const { data } = useSWR<ApiResponse>(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/itemlist?${queryType}=${encodedQueryValue}&page=${currentPage}&itemsPerPage=${itemsPerPage}`,
-    getData
-  );
-
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery]);
+  }, []);
 
   const nextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, Math.ceil((data?.totalItems || 0) / itemsPerPage)));
+    setCurrentPage((prevPage) => prevPage + 1);
   }
 
   const previousPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   }
-
-  const totalPages = Math.ceil((data?.totalItems || 0) / itemsPerPage);
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -136,15 +113,10 @@ export default function ItemListPage() {
           <TabsContent value="all">
             <ItemListContent currentPage={currentPage} itemsPerPage={itemsPerPage} />
             <div className="flex justify-between mt-4">
-              <div className={currentPage === 1 ? 'cursor-not-allowed' : ''}>
               <Button onClick={previousPage} disabled={currentPage === 1}>
                 Previous
               </Button>
-              </div>
-              <div className="text-muted-foreground text-sm">
-                Page {currentPage} of {totalPages}
-              </div>
-              <Button onClick={nextPage} disabled={currentPage === totalPages}>
+              <Button onClick={nextPage}>
                 Next
               </Button>
             </div>

@@ -7,7 +7,7 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt',
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET || '' as string,
     providers: [
         CredentialsProvider({
             type: 'credentials',
@@ -29,17 +29,6 @@ export const authOptions: NextAuthOptions = {
                     username: string;
                     password: string;
                 };
-                // const user: any = {
-                //         id: 1,
-                //         name: "admin",
-                //         username: "admin",
-                //         role: "admin"
-                // }
-                // if(username === "admin" && password === "admin"){
-                //     return user;
-                // }else{
-                //     return null;
-                // }
                 const user:any = await login({username})
                 if (user){
                     const passwordConfirm = await compare(password, user.password);
