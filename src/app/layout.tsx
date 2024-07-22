@@ -44,15 +44,15 @@ export default function RootLayout({
     <SessionProvider>
     <Toaster position="top-center" richColors />
       <body className={inter.className}>
-        {!shouldDisableNavbar(pathname) && (
-            <Navbar/>
-        )}
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
         >
+        {!shouldDisableNavbar(pathname) && (
+            <Navbar/>
+        )}
           {children}
         </ThemeProvider>
       </body>
