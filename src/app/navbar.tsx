@@ -108,23 +108,26 @@ export default function Navbar() {
           <SheetContent side="left">
             <nav className="grid gap-6 text-lg font-medium">
               <Link
-                href="#"
-                className="flex items-center gap-2 text-lg font-semibold"
+                href="/"
+                className={`flex items-center gap-2 text-lg font-semibold`}
               >
                 <Package2 className="h-6 w-6" />
               </Link>
-              <Link href="#" className="hover:text-foreground">
+              <Link 
+                href="/" 
+                className={`${isActive('/')} transition-colors hover:text-foreground`}
+              >
                 Dashboard
               </Link>
               <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
+                href="/listbot"
+                className={`${isActive('/listbot')} transition-colors hover:text-foreground`}
               >
                 ListBot
               </Link>
               <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
+                href="/itemlist"
+                className={`${isActive('/itemlist')} transition-colors hover:text-foreground`}
               >
                 Item List
               </Link>
@@ -142,7 +145,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href={'/settings/profile'}
-                className="text-muted-foreground hover:text-foreground"
+                className={`${isActive('/settings/**')} transition-colors hover:text-foreground`}
               >
                 Settings
               </Link>
