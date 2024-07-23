@@ -19,7 +19,7 @@ const SearchInput = () => {
             } else {
                 router.push('/itemlist');
             }
-        }, 500); // Adjust the delay as needed (500ms in this example)
+        }, 500);
 
         return () => {
             clearTimeout(handler);

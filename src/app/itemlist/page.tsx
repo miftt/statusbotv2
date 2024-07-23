@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button"
 import { useSearchParams } from "next/navigation"
 import { Suspense, useEffect, useState } from "react"
 import useSWR from "swr"
+import SkeletonRow from "./skeleton"
 
 const getData = async (url: string) => {
   await new Promise((r) => setTimeout(r, 300));
@@ -48,7 +49,7 @@ const ItemListContent = ({ currentPage, itemsPerPage }: { currentPage: number, i
   const queryValue = searchQuery || idQuery || '';
   const encodedQueryValue = encodeURI(queryValue);
 
-  const { data } = useSWR<{ items: Item[] }>(
+  const { data, isLoading } = useSWR<{ items: Item[] }>(
     `${process.env.NEXT_PUBLIC_API_URL}/api/itemlist?${queryType}=${encodedQueryValue}&page=${currentPage}&itemsPerPage=${itemsPerPage}`,
     getData
   );
@@ -71,7 +72,9 @@ const ItemListContent = ({ currentPage, itemsPerPage }: { currentPage: number, i
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.items?.map((item) => (
+          {isLoading
+              ? Array.from({ length: 10 }).map((_, idx) => <SkeletonRow key={idx} />)
+              : data?.items?.map((item) => (
               <TableRow key={item.itemID}>
                 <TableCell>{item.itemID}</TableCell>
                 <TableCell className="font-medium">{item.name}</TableCell>
