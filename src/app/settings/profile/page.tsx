@@ -13,8 +13,10 @@ import {
 
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+import { useSession } from "next-auth/react"
 
 export default function SettingsPage() {
+  const {data: session} = useSession();
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
@@ -42,7 +44,7 @@ export default function SettingsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                  <Input disabled placeholder="verstappen" />
+                  <Input disabled placeholder={session?.user?.username} />
               </CardContent>
               <CardHeader>
                 <CardTitle>Email</CardTitle>
@@ -51,7 +53,7 @@ export default function SettingsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                  <Input disabled placeholder="verstappen@m.com" />
+                  <Input disabled placeholder="Not set yet" />
               </CardContent>
               <CardHeader>
                 <CardTitle>Role</CardTitle>
@@ -60,7 +62,7 @@ export default function SettingsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                  <Input disabled placeholder="user" />
+                  <Input disabled placeholder={session?.user?.role} />
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <Button>Save</Button>
