@@ -28,8 +28,8 @@ const SearchInput = () => {
 
     return (
         <header className="items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-            <div className="flex items-center">
-                <div className="ml-auto flex items-center gap-2">
+            <div className="lg:flex lg:items-center">
+                <div className="ml-auto flex items-center gap-2 py-5 justify-center">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" size="sm" className="h-7 gap-1">

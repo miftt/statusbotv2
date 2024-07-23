@@ -2,10 +2,13 @@
 
 import Link from "next/link"
 import {
+  Bot,
   CircleUser,
+  Home,
   Menu,
   Package2,
   Search,
+  Settings,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -76,18 +79,6 @@ export default function Navbar() {
             ListItems
           </Link>
           <Link
-            href="#"
-            className={`${isActive('/dashboard')} transition-colors hover:text-foreground`}
-          >
-            Customers
-          </Link>
-          <Link
-            href="#"
-            className={`${isActive('/dashboard')} transition-colors hover:text-foreground`}
-          >
-            Analytics
-          </Link>
-          <Link
             href={'/settings/profile'}
             className={`${isActive('/settings/**')} transition-colors hover:text-foreground`}
            >
@@ -112,41 +103,34 @@ export default function Navbar() {
                 className={`flex items-center gap-2 text-lg font-semibold`}
               >
                 <Package2 className="h-6 w-6" />
+                Status Bot V2
               </Link>
               <Link 
                 href="/" 
-                className={`${isActive('/')} transition-colors hover:text-foreground`}
+                className={`${isActive('/')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
               >
+                <Home className="h-5 w-5" />
                 Dashboard
               </Link>
               <Link
                 href="/listbot"
-                className={`${isActive('/listbot')} transition-colors hover:text-foreground`}
+                className={`${isActive('/listbot')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
               >
-                ListBot
+                <Bot className="h-5 w-5" />
+                Bot List
               </Link>
               <Link
                 href="/itemlist"
-                className={`${isActive('/itemlist')} transition-colors hover:text-foreground`}
+                className={`${isActive('/itemlist')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
               >
+                <Package2 className="h-5 w-5" />
                 Item List
               </Link>
               <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Customers
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Analytics
-              </Link>
-              <Link
                 href={'/settings/profile'}
-                className={`${isActive('/settings/**')} transition-colors hover:text-foreground`}
+                className={`${isActive('/settings/**')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
               >
+                <Settings className="h-5 w-5" />
                 Settings
               </Link>
             </nav>
