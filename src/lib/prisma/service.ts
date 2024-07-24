@@ -38,7 +38,7 @@ export async function register(
         data.id = uuidv4();
         data.password = await bcrypt.hash(data.password, 10);
         data.username = data.username;
-        data.status = 'Online';
+        data.status = 'Aktif';
         data.role = 'user';
 
         try{
