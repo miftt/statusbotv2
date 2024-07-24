@@ -5,9 +5,9 @@ import {
   Bot,
   CircleUser,
   Home,
+  LockKeyhole,
   Menu,
   Package2,
-  Search,
   Settings,
 } from "lucide-react"
 
@@ -20,7 +20,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import * as React from "react"
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
@@ -59,6 +58,12 @@ export default function Navbar() {
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
             <Package2 className="h-6 w-6" />
+          </Link>
+          <Link
+            href="/admin/dashboard"
+            className={`${isActive('/admin/dashboard')} transition-colors hover:text-foreground`}
+          >
+            AdminDashboard
           </Link>
           <Link
             href="/"
@@ -104,6 +109,13 @@ export default function Navbar() {
               >
                 <Package2 className="h-6 w-6" />
                 Status Bot V2
+              </Link>
+              <Link 
+                href="/admin/dashboard" 
+                className={`${isActive('/admin/dashboard')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
+              >
+                <LockKeyhole className="h-5 w-5" />
+                Admin Dashboard
               </Link>
               <Link 
                 href="/" 
