@@ -112,6 +112,7 @@ export default function Navbar() {
                 <Package2 className="h-6 w-6" />
                 Status Bot V2
               </Link>
+              {session?.user?.role === 'admin' &&(
               <Link 
                 href="/admin/dashboard" 
                 className={`${isActive('/admin/dashboard')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
@@ -119,6 +120,7 @@ export default function Navbar() {
                 <LockKeyhole className="h-5 w-5" />
                 Admin Dashboard
               </Link>
+              )}
               <Link 
                 href="/" 
                 className={`${isActive('/')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
