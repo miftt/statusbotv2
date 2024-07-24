@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt"
 import { NextFetchEvent, NextMiddleware, NextRequest, NextResponse } from "next/server"
 
-const onlyAdminPage = ['/dashboard']
+const onlyAdminPage = ['/admin/dashboard']
 const authPage = ['/login', '/register']
 
 const withAuth = (
@@ -26,7 +26,7 @@ const withAuth = (
                 if(authPage.includes(pathname)){
                     return NextResponse.redirect(new URL('/', req.url))
                 }
-                if(token.role !== 'Admin' && onlyAdminPage.includes(pathname)){
+                if(token.role !== 'admin' && onlyAdminPage.includes(pathname)){
                     return NextResponse.redirect(new URL('/', req.url))
                 }
             }
