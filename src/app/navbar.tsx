@@ -59,12 +59,14 @@ export default function Navbar() {
           >
             <Package2 className="h-6 w-6" />
           </Link>
+          {session?.user?.role === 'admin' && (
           <Link
             href="/admin/dashboard"
             className={`${isActive('/admin/dashboard')} transition-colors hover:text-foreground`}
           >
             AdminDashboard
           </Link>
+          )}
           <Link
             href="/"
             className={`${isActive('/')} transition-colors hover:text-foreground`}
