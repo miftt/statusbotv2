@@ -32,6 +32,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
@@ -50,7 +51,9 @@ import {
 } from "@/components/ui/tabs"
 import useSWR from "swr"
 import SkeletonRow from "./skeleton"
-import { DropdownMenuGroup} from "@radix-ui/react-dropdown-menu"
+import AddToken from "./addToken"
+import AddUser from "./addUser"
+import ChangeToken from "./changeToken"
 
 const fetcher = async(url: string) => fetch(url).then(res => res.json());
 
@@ -110,7 +113,16 @@ export default function AdminDashboardPage() {
                     Export
                   </span>
                 </Button>
-                <DropdownMenu>
+                <div>
+                    <ChangeToken />
+                </div>
+                <div>
+                    <AddToken />
+                </div>
+                <div>
+                    <AddUser />
+                </div>
+                {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button className="h-7 gap-1">
                     <CirclePlus className="h-3.5 w-3.5" />
@@ -129,7 +141,7 @@ export default function AdminDashboardPage() {
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <ShieldPlus className="mr-2 h-4 w-4" />
-                        <span>Add Token</span>
+                        <AddToken />
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <Pen className="mr-2 h-4 w-4" />
@@ -137,7 +149,7 @@ export default function AdminDashboardPage() {
                     </DropdownMenuItem>
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
               </div>
             </div>
             <TabsContent value="all">
