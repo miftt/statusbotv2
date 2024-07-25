@@ -42,8 +42,8 @@ export default function RootLayout({
   return (
     <html lang="en">
     <SessionProvider>
-    <Toaster position="top-center" richColors />
       <body className={inter.className}>
+      <Toaster position="top-center" richColors />
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
