@@ -150,3 +150,77 @@ export async function getStatusBotPublicAPI(userId: string, token: string){
     }
 
 }
+
+export async function addToken(username: any, token: any){
+    const addToken = await prisma.token.create({
+        data:{
+            token: token,
+            user: {
+                connect: {
+                    username: username
+                }
+            }
+        }
+    })
+    try{
+        if(addToken){
+            return {
+                status: true,
+                statusCode: 200,
+                message: 'Token added successfully',
+                data: addToken
+            }
+        }else{
+            return {
+                status: false,
+                statusCode: 400,
+                message: 'username not found',
+            }
+        }
+    }catch (error){
+        return {
+            status: false,
+            statusCode: 400,
+            message: 'Token for this user already exists',
+        }
+    }
+}
+
+export async function changeToken(username: any, token: any){
+    const getUserId = await prisma.user.findUnique({
+        where: {
+            username: username
+        },
+        select: {
+            id: true
+        }
+    })
+    const userId = getUserId?.id
+    const updateToken = await prisma.token.update({
+        where:{
+            userId: userId
+        },
+        data: {
+            token: token,
+            user: {
+                connect:{
+                    username: username
+                }
+            }
+        }
+    })
+    if(updateToken){
+        return {
+            status: true,
+            statusCode: 200,
+            message: 'Token changed successfully',
+            data: updateToken
+        }
+    }else{
+        return {
+            status: false,
+            statusCode: 400,
+            message: 'username not found',
+        }
+    }
+}
