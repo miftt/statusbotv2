@@ -14,15 +14,52 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { UserPlus } from "lucide-react"
+import { useState } from "react"
+import axios from "axios"
+import { toast } from "sonner"
 
-export default function AddUser() {
+export default function AddUser({ mutate } : {mutate: () => void}) {
+  const [usernames, setUsernames] = useState('');
+  const [passwords, setPasswords] = useState('');
+  const [roles, setRoles] = useState('');
+  const [status , setStatus] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) =>{
+    setIsLoading(true);
+    e.preventDefault();
+    try{
+      const res = await axios.post('/api/user/adduser',{
+        username: usernames,
+        password: passwords,
+        role: roles,
+        status: status
+      })
+      if(res.status === 200){
+        toast.success('User added successfully');
+        setUsernames('');
+        setPasswords('');
+        setRoles('');
+        setStatus('');
+      }else{
+        toast.error('An unexpected error has occurred');
+      }
+    }catch(err){
+      toast.error('username already exists');
+    }finally{
+      setIsLoading(false);
+      setIsDialogOpen(false);
+      mutate();
+    }
+  }
   return (
-    <form>
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button size={"sm"}> <UserPlus className="mr-1 h-5 w-5"/>Add User</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
+      <form onSubmit={handleSubmitForm}>
         <DialogHeader>
           <DialogTitle>Add User</DialogTitle>
           <DialogDescription>
@@ -36,6 +73,9 @@ export default function AddUser() {
             </Label>
             <Input
               id="username"
+              placeholder="username"
+              value={usernames}
+              onChange={(e) => setUsernames(e.target.value)}
               className="col-span-3"
             />
           </div>
@@ -45,7 +85,10 @@ export default function AddUser() {
             </Label>
             <Input
               id="password"
+              placeholder="password"
               className="col-span-3"
+              value={passwords}
+              onChange={(e) => setPasswords(e.target.value)}
               type="password"
             />
           </div>
@@ -53,7 +96,7 @@ export default function AddUser() {
             <Label className="text-right">
               Status
             </Label>
-            <Select required>
+            <Select required onValueChange={(value) => setStatus(value)}>
               <SelectTrigger className="col-span-2">
                 <SelectValue placeholder="Select Status" />
               </SelectTrigger>
@@ -71,7 +114,7 @@ export default function AddUser() {
             <Label className="text-right">
               Role
             </Label>
-            <Select required>
+            <Select required onValueChange={(value) => setRoles(value)}>
               <SelectTrigger className="col-span-2">
                 <SelectValue placeholder="Select Role" />
               </SelectTrigger>
@@ -91,10 +134,10 @@ export default function AddUser() {
         </div>
         
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit" disabled={isLoading}>Save changes</Button>
         </DialogFooter>
+    </form>
       </DialogContent>
     </Dialog>
-    </form>
   )
 }

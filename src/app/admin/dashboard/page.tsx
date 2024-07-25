@@ -56,7 +56,6 @@ const fetcher = async(url: string) => fetch(url).then(res => res.json());
 export default function AdminDashboardPage() {
     const {data,isLoading,mutate} = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/getuser`, fetcher)
     const users = data?.data?.data
-    console.log(users)
 
     const usersWithToken = users?.filter((user: any) => user.token) || []
     const usersWithoutToken = users?.filter((user: any) => !user.token) || []
@@ -124,7 +123,7 @@ export default function AdminDashboardPage() {
                   )} mutate={mutate}/>}
                 </div>
                 <div>
-                    <AddUser />
+                    <AddUser mutate={mutate}/>
                 </div>
                 {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
