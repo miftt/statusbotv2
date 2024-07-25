@@ -1,16 +1,12 @@
 'use client'
 
 import {
-    CirclePlus,
-    Clipboard,
+  Clipboard,
   File,
   ListFilter,
   MoreHorizontal,
-  Pen,
   Search,
-  ShieldPlus,
   Trash,
-  User,
   UserPen,
 } from "lucide-react"
 
@@ -32,7 +28,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
@@ -54,12 +49,17 @@ import SkeletonRow from "./skeleton"
 import AddToken from "./addToken"
 import AddUser from "./addUser"
 import ChangeToken from "./changeToken"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const fetcher = async(url: string) => fetch(url).then(res => res.json());
 
 export default function AdminDashboardPage() {
-    const {data,isLoading} = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/getuser`, fetcher)
+    const {data,isLoading,mutate} = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/getuser`, fetcher)
     const users = data?.data?.data
+    console.log(users)
+
+    const usersWithToken = users?.filter((user: any) => user.token) || []
+    const usersWithoutToken = users?.filter((user: any) => !user.token) || []
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -114,10 +114,14 @@ export default function AdminDashboardPage() {
                   </span>
                 </Button>
                 <div>
-                    <ChangeToken />
+                    {isLoading ? <Skeleton className="h-7 w-28"/> : <ChangeToken username={usersWithToken.map((user: any) =>
+                        user.username
+                    )} mutate={mutate}/>}
                 </div>
                 <div>
-                    <AddToken />
+                  {isLoading ? <Skeleton className="h-7 w-28"/> : <AddToken username={usersWithoutToken.map((user: any) =>
+                      user.username
+                  )} mutate={mutate}/>}
                 </div>
                 <div>
                     <AddUser />
