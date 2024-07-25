@@ -13,12 +13,50 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import axios from "axios"
 import { ShieldPlus } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { toast } from "sonner"
 
-export default function ChangeToken() {
+interface TokenProps {
+  username: any
+  mutate: () => void
+}
+
+const AddToken: React.FC<TokenProps> = ({ username, mutate }) => {
+  const [usernames, setUsernames] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [tokens, setTokens] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
+    e.preventDefault();
+    try {
+      const res = await axios.post('/api/user/token/addtoken', {
+        username: usernames,
+        token: tokens
+      });
+      
+      if (res.status === 200) {
+        toast.success('Token added successfully');
+      } else {
+        toast.error('An unexpected error has occurred');
+      }
+    } catch (err) {
+      toast.error('This user already has a token');
+    } finally {
+      setIsLoading(false);
+      setUsernames('');
+      setTokens('');
+      setIsDialogOpen(false);
+      mutate();
+    }
+  }
+
   return (
-    <form>
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button size={"sm"}> <ShieldPlus className="mr-1 h-5 w-5"/>Add Token</Button>
       </DialogTrigger>
@@ -27,41 +65,49 @@ export default function ChangeToken() {
           <DialogTitle>Add Token User</DialogTitle>
           <DialogDescription>
             Add user token here.
+            {username.length === 0 && <span className="flex text-red-600 text-sm">All user has a token!</span>}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Select required>
-              <SelectTrigger className="col-span-2">
-                <SelectValue placeholder="Select user" />
-              </SelectTrigger>
-              <SelectContent position="popper">
-                <SelectItem value="mifuzi">
-                  mifuzi
-                </SelectItem>
-              </SelectContent>
-            </Select>
+        <form onSubmit={handleSubmit}>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Username
+              </Label>
+              <Select required onValueChange={(value) => setUsernames(value)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select user" />
+                </SelectTrigger>
+                <SelectContent position="popper">
+                  {username.map((user: string) => (
+                    <SelectItem key={user} value={user}>
+                      {user}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="token" className="text-right">
+                Token
+              </Label>
+              <Input
+                id="token"
+                className="col-span-3"
+                placeholder="Insert new token"
+                required
+                value={tokens}
+                onChange={(e) => setTokens(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Token
-            </Label>
-            <Input
-              id="username"
-              className="col-span-3"
-              placeholder="Insert new token"
-              required
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="submit" disabled={isLoading}>Save changes</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
-    </form>
   )
 }
+
+export default AddToken;
