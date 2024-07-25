@@ -52,6 +52,37 @@ export async function register(
     }
 }
 
+export async function addUser(data:{
+    id: string,
+    username: string,
+    password: string,
+    status: string,
+    role: string,
+}){
+    const user = await prisma.user.findUnique({
+        where: {
+            username: data.username
+        },
+    })
+    if(user){
+        return {status: false, statusCode: 400, message: 'Username already exists'}
+    }else{
+        data.id = uuidv4();
+        data.password = await bcrypt.hash(data.password, 10);
+        data.username = data.username;
+        data.status = data.status;
+        data.role = data.role;
+    }
+    try{
+        const createUser = await prisma.user.create({
+            data: data
+        })
+        return {status: true, statusCode: 200, message: 'User created Successfully', data: createUser};
+    }catch(err){
+        return {status: false, statusCode: 400, message: 'Register Failed', data: err};
+    }
+}
+
 export async function changePassword(userId: string, newPassword: string, oldPassword: string) {
     const checkOldPassword = await prisma.user.findUnique({
         where: {
