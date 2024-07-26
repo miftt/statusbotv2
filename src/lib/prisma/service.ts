@@ -83,6 +83,29 @@ export async function addUser(data:{
     }
 }
 
+export async function editUser(userId: string, data: {
+    username: string,
+    password: string,
+    status: string,
+    role: string,
+    expireDate: Date
+}){
+
+}
+
+export async function deleteUser(userId: string) {
+    const deleteUser = await prisma.user.delete({
+        where: {
+            id: userId
+        }
+    })
+    if(deleteUser){
+        return {status: true, statusCode: 200, message: 'User deleted successfully', data: deleteUser};
+    }else{
+        return {status: false, statusCode: 400, message: 'User not found'}
+    }
+}
+
 export async function changePassword(userId: string, newPassword: string, oldPassword: string) {
     const checkOldPassword = await prisma.user.findUnique({
         where: {
