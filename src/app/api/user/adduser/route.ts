@@ -20,7 +20,7 @@ export const POST = async (request: Request) => {
         }, { status: 401});
     }else{
         try{
-            const res = await addUser(body)
+            const res: any = await addUser(body)
             if(res.status === false) {
                 return NextResponse.json({
                     status: false,
@@ -31,7 +31,10 @@ export const POST = async (request: Request) => {
                 );
             }else if(res.status === true) {
                 return NextResponse.json({
-                    data: res
+                    status: true,
+                    statusCode: 200,
+                    message: res.message,
+                    username: res.data?.username
                 }, 
                     { status: 200 }
                 );
