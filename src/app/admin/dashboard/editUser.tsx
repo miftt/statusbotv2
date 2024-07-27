@@ -162,7 +162,7 @@ const EditUser: React.FC<EditProps> = ({
                             <Label className="text-right">
                                 Expire Date
                             </Label>
-                            <Popover>
+                            <Popover modal={true}>
                                 <PopoverTrigger asChild>
                                     <Button
                                         variant={"outline"}

@@ -131,18 +131,15 @@ export default function AdminDashboardPage() {
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        <User className="mr-2 h-4 w-4" />
+                      <DropdownMenuItem asChild>
                         <AddUser mutate={mutate} />
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <ShieldPlus className="mr-2 h-4 w-4" />
+                      <DropdownMenuItem asChild>
                         <AddToken username={usersWithoutToken.map((user: any) =>
                           user.username
                         )} mutate={mutate} />
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Pen className="mr-2 h-4 w-4" />
+                      <DropdownMenuItem asChild>
                         <ChangeToken username={usersWithToken.map((user: any) =>
                           user.username
                         )} mutate={mutate} />
@@ -171,7 +168,7 @@ export default function AdminDashboardPage() {
                           <TableHead>Status</TableHead>
                           <TableHead className="hidden sm:table-cell">Token</TableHead>
                           <TableHead className="hidden sm:table-cell">Created at</TableHead>
-                          <TableHead>Expire Date</TableHead>
+                          <TableHead className="hidden sm:table-cell">Expire Date</TableHead>
                           <TableHead>
                             Actions
                           </TableHead>
@@ -203,7 +200,7 @@ export default function AdminDashboardPage() {
                               <TableCell className="hidden sm:table-cell break-words">
                                 {new Date(user.created_at).toLocaleDateString('id-ID')}
                               </TableCell>
-                              <TableCell className="break-words">
+                              <TableCell className="hidden sm:table-cell break-words">
                                 {new Date(user.expireDate).toLocaleDateString('id-ID')}
                               </TableCell>
                               <TableCell>

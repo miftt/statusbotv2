@@ -38,7 +38,7 @@ const AddToken: React.FC<TokenProps> = ({ username, mutate }) => {
         username: usernames,
         token: tokens
       });
-      
+
       if (res.status === 200) {
         toast.success('Token added successfully');
       } else {
@@ -58,7 +58,11 @@ const AddToken: React.FC<TokenProps> = ({ username, mutate }) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button size={"sm"}> <ShieldPlus className="mr-1 h-5 w-5"/>Add Token</Button>
+        <div className='hover:bg-muted-foreground/20 relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        inset && "pl-8'>
+          <ShieldPlus className='mr-2 h-4 w-4' />
+          <span>Add Token</span>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
