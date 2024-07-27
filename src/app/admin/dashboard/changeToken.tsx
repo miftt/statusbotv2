@@ -19,7 +19,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 
 interface TokenProps {
-  username : any,
+  username: any,
   mutate: () => void
 }
 
@@ -32,19 +32,19 @@ const ChangeToken: React.FC<TokenProps> = ({ username, mutate }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     e.preventDefault();
-    try { 
-    const res = await axios.post('/api/user/token/changetoken', {
-      username: usernames,
-      token: tokens
-    });
-      if(res.status === 200) {
+    try {
+      const res = await axios.post('/api/user/token/changetoken', {
+        username: usernames,
+        token: tokens
+      });
+      if (res.status === 200) {
         toast.success('Token changed successfully');
-      }else{
+      } else {
         toast.error('An unexpected error has occurred');
       }
-    }catch(err){
+    } catch (err) {
       toast.error('Please select a user');
-    }finally{
+    } finally {
       setIsLoading(false);
       setUsernames('');
       setTokens('');
@@ -56,7 +56,7 @@ const ChangeToken: React.FC<TokenProps> = ({ username, mutate }) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button size={"sm"}> <UserPen className="mr-1 h-5 w-5"/>Change Token</Button>
+        <Button size={"sm"}> <UserPen className="mr-1 h-5 w-5" />Change Token</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -27,13 +27,13 @@ const DeleteUser: React.FC<DeleteProps> = ({
                     "Content-Type": "application/json"
                 },
             });
-            if(res.status === 200) {
+            if (res.status === 200) {
                 toast.success(`User ${username} has been deleted`);
-            }else{
+            } else {
                 toast.error('An unexpected error has occurred');
             }
         } catch (err) {
-                toast.error('This user not found');
+            toast.error('This user not found');
         } finally {
             setIsLoading(false);
             setIsDialogOpen(false);
@@ -45,13 +45,13 @@ const DeleteUser: React.FC<DeleteProps> = ({
             <DialogTrigger asChild>
                 <div className='text-red-500 hover:bg-muted-foreground/20 relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
                  inset && "pl-8'>
-                <Trash className='mr-2 h-4 w-4' />
-                <span>Delete User</span>
+                    <Trash className='mr-2 h-4 w-4' />
+                    <span>Delete User</span>
                 </div>
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
-                    <DialogTitle>Are you sure you want to delete "{username}" ?</DialogTitle>
+                    <DialogTitle>Are you sure you want to delete {username.toUpperCase()}?</DialogTitle>
                     <DialogDescription>
                         This action cannot be undone.
                     </DialogDescription>

@@ -88,7 +88,7 @@ const EditUser: React.FC<EditProps> = ({
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmitForm}>
                     <DialogHeader>
-                        <DialogTitle>Edit "{username}" data</DialogTitle>
+                        <DialogTitle>Edit {username.toUpperCase()} data</DialogTitle>
                         <DialogDescription>
                             Edit user data here
                         </DialogDescription>
