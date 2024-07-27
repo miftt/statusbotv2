@@ -50,15 +50,17 @@ import AddToken from "./addToken"
 import AddUser from "./addUser"
 import ChangeToken from "./changeToken"
 import { Skeleton } from "@/components/ui/skeleton"
+import DeleteUser from "./deleteUser"
+import EditUser from "./editUser"
 
-const fetcher = async(url: string) => fetch(url).then(res => res.json());
+const fetcher = async (url: string) => fetch(url).then(res => res.json());
 
 export default function AdminDashboardPage() {
-    const {data,isLoading,mutate} = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/getuser`, fetcher)
-    const users = data?.data?.data
+  const { data, isLoading, mutate } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/getuser`, fetcher)
+  const users = data?.data?.data
 
-    const usersWithToken = users?.filter((user: any) => user.token) || []
-    const usersWithoutToken = users?.filter((user: any) => !user.token) || []
+  const usersWithToken = users?.filter((user: any) => user.token) || []
+  const usersWithoutToken = users?.filter((user: any) => !user.token) || []
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -113,17 +115,17 @@ export default function AdminDashboardPage() {
                   </span>
                 </Button>
                 <div>
-                    {isLoading ? <Skeleton className="h-7 w-28"/> : <ChangeToken username={usersWithToken.map((user: any) =>
-                        user.username
-                    )} mutate={mutate}/>}
+                  {isLoading ? <Skeleton className="h-7 w-28" /> : <ChangeToken username={usersWithToken.map((user: any) =>
+                    user.username
+                  )} mutate={mutate} />}
                 </div>
                 <div>
-                  {isLoading ? <Skeleton className="h-7 w-28"/> : <AddToken username={usersWithoutToken.map((user: any) =>
-                      user.username
-                  )} mutate={mutate}/>}
+                  {isLoading ? <Skeleton className="h-7 w-28" /> : <AddToken username={usersWithoutToken.map((user: any) =>
+                    user.username
+                  )} mutate={mutate} />}
                 </div>
                 <div>
-                    <AddUser mutate={mutate}/>
+                  <AddUser mutate={mutate} />
                 </div>
                 {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -183,54 +185,55 @@ export default function AdminDashboardPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                    {isLoading
+                      {isLoading
                         ? Array.from({ length: 5 }).map((_, idx) => <SkeletonRow key={idx} />)
                         : users?.map((user: any) => (
-                      <TableRow key={user?.id}>
-                        <TableCell className="hidden w-48 sm:table-cell">
-                          {user.id}
-                        </TableCell>
-                        <TableCell className="font-medium break-words">
-                          {user.username}
-                        </TableCell>
-                        <TableCell className="break-words">
-                          {user.role}
-                        </TableCell>
-                        <TableCell className="break-words">
-                            <Badge variant={user.status === 'Aktif' ? 'success' : 'destructive'}>{user.status}</Badge>
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell break-words">
-                          {user.token?.token || 'No token'}
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell break-words">
-                          {new Date(user.created_at).toLocaleDateString('id-ID')}
-                        </TableCell>
-                        <TableCell className="break-words">
-                          {new Date(user.expireDate).toLocaleDateString('id-ID')}
-                        </TableCell>
-                        <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                aria-haspopup="true"
-                                size="icon"
-                                variant="ghost"
-                              >
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">Toggle menu</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem><Clipboard className="mr-2 h-4 w-4"/>Copy Token</DropdownMenuItem>
-                              <DropdownMenuItem><UserPen className="mr-2 h-4 w-4"/>Edit</DropdownMenuItem>
-                              <DropdownMenuItem className="text-red-500"><Trash className="mr-2 h-4 w-4" />Delete</DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          <TableRow key={user?.id}>
+                            <TableCell className="hidden w-48 sm:table-cell">
+                              {user.id}
+                            </TableCell>
+                            <TableCell className="font-medium break-words">
+                              {user.username}
+                            </TableCell>
+                            <TableCell className="break-words">
+                              {user.role}
+                            </TableCell>
+                            <TableCell className="break-words">
+                              <Badge variant={user.status === 'Aktif' ? 'success' : 'destructive'}>{user.status}</Badge>
+                            </TableCell>
+                            <TableCell className="hidden sm:table-cell break-words">
+                              {user.token?.token || 'No token'}
+                            </TableCell>
+                            <TableCell className="hidden sm:table-cell break-words">
+                              {new Date(user.created_at).toLocaleDateString('id-ID')}
+                            </TableCell>
+                            <TableCell className="break-words">
+                              {new Date(user.expireDate).toLocaleDateString('id-ID')}
+                            </TableCell>
+                            <TableCell>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                  >
+                                    <MoreHorizontal className="h-4 w-4" />
+                                    <span className="sr-only">Toggle menu</span>
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem><Clipboard className="mr-2 h-4 w-4" />Copy Token</DropdownMenuItem>
+                                  <DropdownMenuItem asChild><EditUser id={user.id} username={user.username} role={user.role} status={user.status} expireDate={user.expireDate} mutate={mutate} /></DropdownMenuItem>
+                                  {/* <DropdownMenuItem className="text-red-500"><Trash className="mr-2 h-4 w-4"/><DeleteUser id={user.id} mutate={mutate}/></DropdownMenuItem> */}
+                                  <DropdownMenuItem asChild className="text-red-500"><DeleteUser id={user.id} username={user.username} mutate={mutate} /></DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))}
                     </TableBody>
                   </Table>
                 </CardContent>
