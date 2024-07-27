@@ -90,7 +90,7 @@ export default function AdminDashboardPage() {
                   Archived
                 </TabsTrigger>
               </TabsList>
-              <div className="lg:ml-auto md:ml-auto sm:ml-0 flex items-center gap-2 mt-2 sm:mt-0">
+              <div className="ml-auto flex items-center gap-2 mt-2 sm:mt-0">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="h-7 gap-1">
