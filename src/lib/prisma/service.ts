@@ -85,12 +85,28 @@ export async function addUser(data:{
 
 export async function editUser(userId: string, data: {
     username: string,
-    password: string,
+    password?: string,
     status: string,
     role: string,
     expireDate: Date
 }){
-
+    const hashedPassword = await bcrypt.hash(data.password as string, 10);
+    if(data.password && data.password.trim() !== ''){
+        data.password = hashedPassword;
+    }else{
+        delete data.password;
+    }
+    const updateUser = await prisma.user.update({
+        where:{
+            id: userId
+        },
+        data: data
+    })
+    if(updateUser){
+        return {status: true, statusCode: 200, message: 'User updated successfully', data: {username: updateUser.username, status: updateUser.status, role: updateUser.role, expireDate: updateUser.expireDate}};
+    }else{
+        return {status: false, statusCode: 400, message: 'User not found', data: 'No data'}
+    }
 }
 
 export async function deleteUser(userId: string) {
