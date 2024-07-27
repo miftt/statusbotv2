@@ -6,11 +6,7 @@ import {
   File,
   ListFilter,
   MoreHorizontal,
-  Pen,
   Search,
-  ShieldPlus,
-  Trash,
-  User,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -53,7 +49,6 @@ import SkeletonRow from "./skeleton"
 import AddToken from "./addToken"
 import AddUser from "./addUser"
 import ChangeToken from "./changeToken"
-import { Skeleton } from "@/components/ui/skeleton"
 import DeleteUser from "./deleteUser"
 import EditUser from "./editUser"
 

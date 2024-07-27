@@ -30,139 +30,139 @@ import { toast } from "sonner"
 import { usePathname } from "next/navigation"
 
 export default function Navbar() {
-    const pathname = usePathname();
-    const isActive = (path: string) => {
-        if (path.endsWith('/**')) {
-            const basePath = path.slice(0, -3); // Remove '/**' from the end
-            return pathname.startsWith(basePath) ? 'text-foreground' : 'text-muted-foreground';
-        }
-        return pathname === path ? 'text-foreground' : 'text-muted-foreground';
+  const pathname = usePathname();
+  const isActive = (path: string) => {
+    if (path.endsWith('/**')) {
+      const basePath = path.slice(0, -3); // Remove '/**' from the end
+      return pathname.startsWith(basePath) ? 'text-foreground' : 'text-muted-foreground';
     }
-    const {data: session, status} = useSession();
-    const { setTheme } = useTheme();
-    
-    const [isLoading, setIsLoading] = useState(false)
-    const handleLogout = async () => {
-      setIsLoading(true);
-      toast.success('Logout Success');
-      await new Promise((r) => setTimeout(r, 1000));
-      signOut();
-      setIsLoading(false);
-    }
-  
-    return (
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-lg font-semibold md:text-base"
-          >
-            <Package2 className="h-6 w-6" />
-          </Link>
-          {session?.user?.role === 'admin' && (
+    return pathname === path ? 'text-foreground' : 'text-muted-foreground';
+  }
+  const { data: session, status } = useSession();
+  const { setTheme } = useTheme();
+
+  const [isLoading, setIsLoading] = useState(false)
+  const handleLogout = async () => {
+    setIsLoading(true);
+    toast.success('Logout Success');
+    await new Promise((r) => setTimeout(r, 1000));
+    signOut();
+    setIsLoading(false);
+  }
+
+  return (
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+      <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-lg font-semibold md:text-base"
+        >
+          <Package2 className="h-6 w-6" />
+        </Link>
+        {session?.user?.role === 'admin' && (
           <Link
             href="/admin/dashboard"
             className={`${isActive('/admin/dashboard')} transition-colors hover:text-foreground`}
           >
             AdminDashboard
           </Link>
-          )}
-          <Link
-            href="/"
-            className={`${isActive('/')} transition-colors hover:text-foreground`}
+        )}
+        <Link
+          href="/"
+          className={`${isActive('/')} transition-colors hover:text-foreground`}
+        >
+          Dashboard
+        </Link>
+        <Link
+          href={'/listbot'}
+          className={`${isActive('/listbot')} transition-colors hover:text-foreground`}
+        >
+          ListBot
+        </Link>
+        <Link
+          href="/itemlist"
+          className={`${isActive('/itemlist')} transition-colors hover:text-foreground`}
+        >
+          ListItems
+        </Link>
+        <Link
+          href={'/settings/profile'}
+          className={`${isActive('/settings/**')} transition-colors hover:text-foreground`}
+        >
+          Settings
+        </Link>
+      </nav>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="shrink-0 md:hidden"
           >
-            Dashboard
-          </Link>
-          <Link
-            href={'/listbot'}
-            className={`${isActive('/listbot')} transition-colors hover:text-foreground`}
-          >
-            ListBot
-          </Link>
-          <Link
-            href="/itemlist"
-            className={`${isActive('/itemlist')} transition-colors hover:text-foreground`}
-          >
-            ListItems
-          </Link>
-          <Link
-            href={'/settings/profile'}
-            className={`${isActive('/settings/**')} transition-colors hover:text-foreground`}
-           >
-            Settings
-           </Link>
-        </nav>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="shrink-0 md:hidden"
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle navigation menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left">
+          <nav className="grid gap-6 text-lg font-medium">
+            <Link
+              href="/"
+              className={`flex items-center gap-2 text-lg font-semibold`}
             >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left">
-            <nav className="grid gap-6 text-lg font-medium">
+              <Package2 className="h-6 w-6" />
+              Status Bot V2
+            </Link>
+            {session?.user?.role === 'admin' && (
               <Link
-                href="/"
-                className={`flex items-center gap-2 text-lg font-semibold`}
-              >
-                <Package2 className="h-6 w-6" />
-                Status Bot V2
-              </Link>
-              {session?.user?.role === 'admin' &&(
-              <Link 
-                href="/admin/dashboard" 
+                href="/admin/dashboard"
                 className={`${isActive('/admin/dashboard')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
               >
                 <LockKeyhole className="h-5 w-5" />
                 Admin Dashboard
               </Link>
-              )}
-              <Link 
-                href="/" 
-                className={`${isActive('/')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
-              >
-                <Home className="h-5 w-5" />
-                Dashboard
-              </Link>
-              <Link
-                href="/listbot"
-                className={`${isActive('/listbot')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
-              >
-                <Bot className="h-5 w-5" />
-                Bot List
-              </Link>
-              <Link
-                href="/itemlist"
-                className={`${isActive('/itemlist')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
-              >
-                <Package2 className="h-5 w-5" />
-                Item List
-              </Link>
-              <Link
-                href={'/settings/profile'}
-                className={`${isActive('/settings/**')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
-              >
-                <Settings className="h-5 w-5" />
-                Settings
-              </Link>
-            </nav>
-          </SheetContent>
-        </Sheet>
-        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <div className="ml-auto flex-1 sm:flex-initial">
-           
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
+            )}
+            <Link
+              href="/"
+              className={`${isActive('/')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
+            >
+              <Home className="h-5 w-5" />
+              Dashboard
+            </Link>
+            <Link
+              href="/listbot"
+              className={`${isActive('/listbot')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
+            >
+              <Bot className="h-5 w-5" />
+              Bot List
+            </Link>
+            <Link
+              href="/itemlist"
+              className={`${isActive('/itemlist')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
+            >
+              <Package2 className="h-5 w-5" />
+              Item List
+            </Link>
+            <Link
+              href={'/settings/profile'}
+              className={`${isActive('/settings/**')} flex items-center gap-4 px-2.5 transition-colors hover:text-foreground`}
+            >
+              <Settings className="h-5 w-5" />
+              Settings
+            </Link>
+          </nav>
+        </SheetContent>
+      </Sheet>
+      <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+        <div className="ml-auto flex-1 sm:flex-initial">
+
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="secondary" size="icon" className="rounded-full">
+              <CircleUser className="h-5 w-5" />
+              <span className="sr-only">Toggle user menu</span>
+            </Button>
+          </DropdownMenuTrigger>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
@@ -183,26 +183,26 @@ export default function Navbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
-                {session?.user?.username}
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem><Link className="cursor-default" href={"/settings/profile"}>Settings</Link></DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              {status === 'authenticated' ?  (
-                <DropdownMenuItem disabled={isLoading} onClick={handleLogout}>
-                    Logout
-                </DropdownMenuItem>
-              ):(
-                <DropdownMenuItem>
-                  <Link className="cursor-default" href="/login">Login</Link>
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </header>
-    )
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>
+              {session?.user?.username}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem><Link className="cursor-default" href={"/settings/profile"}>Settings</Link></DropdownMenuItem>
+            <DropdownMenuItem>Support</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {status === 'authenticated' ? (
+              <DropdownMenuItem disabled={isLoading} onClick={handleLogout}>
+                Logout
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem>
+                <Link className="cursor-default" href="/login">Login</Link>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </header>
+  )
 }
