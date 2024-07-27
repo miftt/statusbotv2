@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 export const POST = async (request: Request) => {
     const session = await getServerSession(authOptions);
     const body = await request.json();
-    console.log(body)
     if(!session) {
         return NextResponse.json({
             status: false,

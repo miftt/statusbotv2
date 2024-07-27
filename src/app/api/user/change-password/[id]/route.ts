@@ -12,9 +12,9 @@ export const PATCH = async (req: Request, {params}: {params: {id: string}}) =>{
         oldPassword: body.oldPassword
     };
     if(session == null){
-        return NextResponse.json({error: "Unauthorized"}, {status: 401});
+        return NextResponse.json({status: false, statusCode: 401, error: "Unauthorized"}, {status: 401});
     }else if(session?.user?.id !== params.id){
-        return NextResponse.json({error: "Unauthorized"}, {status: 401});
+        return NextResponse.json({status: false, statusCode: 401, error: "Unauthorized"}, {status: 401});
     }else{
         try{
             const res = await changePassword(session?.user.id, data.newPassword, data.oldPassword)
