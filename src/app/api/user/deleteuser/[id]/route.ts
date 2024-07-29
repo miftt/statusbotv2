@@ -1,10 +1,9 @@
-import { authOptions } from "@/lib/authOptions/authOptions"
+import { getAuth } from "@/hooks/getAuth";
 import { deleteUser } from "@/lib/prisma/service";
-import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server";
 
 export const DELETE = async (request: Request, {params} : {params: {id: string}}) => {
-    const session = await getServerSession(authOptions);
+    const session = await getAuth();
     if(!session){
         return NextResponse.json({
             status: false,

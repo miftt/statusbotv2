@@ -1,10 +1,9 @@
-import { authOptions } from "@/lib/authOptions/authOptions";
 import { getAllUser } from "@/lib/prisma/service";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { getAuth } from "@/hooks/getAuth";
 
-export const GET = async (request: Request) => {
-    const session = await getServerSession(authOptions);
+export const GET = async () => {
+    const session = await getAuth();
     if(!session){
         return NextResponse.json({error: 'Must be logged in'}, {status: 401});
     }else if(session?.user?.role !== 'admin'){

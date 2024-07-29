@@ -1,11 +1,10 @@
-import { authOptions } from "@/lib/authOptions/authOptions";
+import { getAuth } from "@/hooks/getAuth";
 import { changePassword } from "@/lib/prisma/service";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export const PATCH = async (req: Request, {params}: {params: {id: string}}) =>{
     const body = await req.json();
-    const session = await getServerSession(authOptions);
+    const session = await getAuth();
 
     const data = {
         newPassword: body.newPassword,
@@ -17,7 +16,7 @@ export const PATCH = async (req: Request, {params}: {params: {id: string}}) =>{
         return NextResponse.json({status: false, statusCode: 401, error: "Unauthorized"}, {status: 401});
     }else{
         try{
-            const res = await changePassword(session?.user.id, data.newPassword, data.oldPassword)
+            const res = await changePassword(session?.user?.id, data.newPassword, data.oldPassword)
             if(res?.statusCode === 400){
                 return NextResponse.json({error: res.message}, {status: res.statusCode});
             }else if(res?.statusCode === 200){

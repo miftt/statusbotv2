@@ -1,10 +1,9 @@
 import { changeToken } from "@/lib/prisma/service";
-import { authOptions } from "@/lib/authOptions/authOptions";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { getAuth } from "@/hooks/getAuth";
 
 export const POST = async (request: Request) => {
-    const session = await getServerSession(authOptions);
+    const session = await getAuth();
     const body = await request.json();
     if(!session) {
         return NextResponse.json({

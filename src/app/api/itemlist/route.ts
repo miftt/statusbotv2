@@ -1,3 +1,4 @@
+import { getAuth } from '@/hooks/getAuth';
 import { NextResponse, NextRequest } from 'next/server';
 
 const itemList = [
@@ -65120,9 +65121,17 @@ export async function GET(req: NextRequest) {
     const q = searchParams.get("q");
     const page = Number(searchParams.get("page")) || 1;
     const itemsPerPage = Number(searchParams.get("itemsPerPage")) || 10;
-  
+    const session = await getAuth();
     let items = itemList;
-  
+
+    if(!session) {
+      return NextResponse.json({
+        status: false,
+        statusCode: 401,
+        message: "Unauthorized"
+      },{ status: 401 })
+    }
+    
     // If 'id' is provided, find the item with the corresponding 'id'
     if (id) {
       const item = items.find(item => item.itemID === id);

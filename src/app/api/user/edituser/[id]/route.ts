@@ -1,10 +1,9 @@
-import { authOptions } from "@/lib/authOptions/authOptions"
+import { getAuth } from "@/hooks/getAuth";
 import { editUser } from "@/lib/prisma/service";
-import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server";
 
 export const PATCH = async (request: Request , {params} : {params: {id: string}}) => {
-    const session = await getServerSession(authOptions);
+    const session = await getAuth();
     const body = await request.json();
     if(!session){
         return NextResponse.json({status: false, statusCode: 401, error: "Unauthorized"}, {status: 401});

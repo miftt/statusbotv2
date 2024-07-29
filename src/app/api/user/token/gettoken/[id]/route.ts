@@ -1,11 +1,10 @@
-import { authOptions } from "@/lib/authOptions/authOptions";
+import { getAuth } from "@/hooks/getAuth";
 import { getToken } from "@/lib/prisma/service";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export const GET = async (request: Request, {params} : {params: {id: string}}) => {
-    const session = await getServerSession(authOptions);
-    
+    const session = await getAuth();
+
     if(!session){
         return NextResponse.json({error: 'Must be logged in'}, {status: 401});
     }else if(session?.user?.id !== params.id){
