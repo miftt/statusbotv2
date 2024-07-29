@@ -27,7 +27,7 @@ const withAuth = (
                     return NextResponse.redirect(new URL('/', req.url))
                 }
                 if(token.role !== 'admin' && onlyAdminPage.includes(pathname)){
-                    return NextResponse.redirect(new URL('/', req.url))
+                    return NextResponse.redirect(new URL(`/not-found`, req.url))
                 }
             }
         }
